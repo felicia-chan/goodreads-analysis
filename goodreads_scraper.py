@@ -13,10 +13,11 @@ URL = "https://www.goodreads.com"
 
 driver = webdriver.Chrome(executable_path=PATH)
 
+driver.get(URL)
 
-# search = driver.find_element(By.ID, "sitesearch") # find where search box is located
+search = driver.find_element(By.ID, "sitesearch") # find where search box is located
 search = driver.find_element(By.ID, "searchBox")
-# search = search.find_element(By.XPATH, '//input[@id="sitesearch_field"]')
+search = search.find_element(By.XPATH, '//input[@id="sitesearch_field"]')
 
 search.send_keys("Harry Potter 1") # input search Harry Potter
 search.send_keys(Keys.RETURN)
