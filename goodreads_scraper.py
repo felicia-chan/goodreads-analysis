@@ -5,6 +5,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import pandas 
+import requests
+import re
 from bs4 import BeautifulSoup
 
 PATH = "/Users/feliciachan/Documents/chrome_driver/chromedriver"
@@ -63,7 +65,7 @@ try:
     # reviews2 = driver.find_elements(By.XPATH, "//div[@id='other_reviews']//div[@class='friendReviews elementListBrown']//div[@class='reviewText stacked']//a[@href='#']").click()
     
     ## THIS IS PROBABLY UNNEEDED. YOU CAN GET THE TEXT WITHOUT CLICKING ON "...more" ##
-    reviews = WebDriverWait(driver, 10).until(
+    reviews = WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.LINK_TEXT, "...more"))
     )
     reviews = driver.find_elements(By.LINK_TEXT, "...more")
@@ -74,11 +76,23 @@ try:
     print('version 1 website.')
 
 except:
-
+    print("THIS IS WRONG")
     pass
 
 
-time.sleep(10)
-
 # enter_site()
 
+
+page = requests.get(driver.current_url)
+soup = BeautifulSoup(page.content, "html.parser")
+print(driver.current_url)
+print(soup.prettify())
+
+reviews = []
+# reviews_selector = soup.find_all('div')
+
+
+time.sleep(1000)
+
+## to get a really good sentiment analysis, shouldn't i train on a certain amount of 5 star reviews, then 4 star, then 3...
+# for sentiment analysis, correct? let's do this later...

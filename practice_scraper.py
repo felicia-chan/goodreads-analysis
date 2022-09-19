@@ -14,7 +14,7 @@ PATH = "/Users/feliciachan/Documents/chrome_driver/chromedriver"
 driver = webdriver.Chrome(PATH)
 
 driver.get("https://techwithtim.net")
-print(driver.title)
+
 
 # find_element_by_name has deprecated, use find_element("name", "thing")
 search = driver.find_element("name", "s")
