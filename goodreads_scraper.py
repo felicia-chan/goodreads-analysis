@@ -27,26 +27,26 @@ search.send_keys(Keys.RETURN)
 # close login sign
 
 try:
-    modal = WebDriverWait(driver, 10).until(
+    modal = WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.CLASS_NAME, "modal__content"))
     )
 
-    close_button = WebDriverWait(driver, 20).until(
+    close_button = WebDriverWait(driver, 5).until(
         EC.element_to_be_clickable((By.XPATH, "//div[@class='modal__content']//button[@class='gr-iconButton']"))
     ).click()
 
-    print('SUCCESSFUL.')
+    print('searched harry potter 1 and closed modal.')
 
 except:
     print('Not found.')
     driver.close()
 
 try:
-    book_title = WebDriverWait(driver, 10).until(
+    book_title = WebDriverWait(driver, 5).until(
         EC.element_to_be_clickable((By.XPATH, "//a[@class='bookTitle']"))
     ).click()
 
-    print('Successful')
+    print('clicked on harry potter 1')
 
 except:
     print('Not found.')
@@ -57,27 +57,27 @@ except:
 # future: open multiple pages in loop
 # scrape reviews from each page
 
-try:
-    # reviews = WebDriverWait(driver, 10).until(
-    #   EC.element_to_be_clickable((By.XPATH, "//div[@id='other_reviews']//div[@class='friendReviews elementListBrown']//div[@class='reviewText stacked']//a[@href='#']"))
-    #).click()
+# try:
+#     # reviews = WebDriverWait(driver, 10).until(
+#     #   EC.element_to_be_clickable((By.XPATH, "//div[@id='other_reviews']//div[@class='friendReviews elementListBrown']//div[@class='reviewText stacked']//a[@href='#']"))
+#     #).click()
     
-    # reviews2 = driver.find_elements(By.XPATH, "//div[@id='other_reviews']//div[@class='friendReviews elementListBrown']//div[@class='reviewText stacked']//a[@href='#']").click()
+#     # reviews2 = driver.find_elements(By.XPATH, "//div[@id='other_reviews']//div[@class='friendReviews elementListBrown']//div[@class='reviewText stacked']//a[@href='#']").click()
     
-    ## THIS IS PROBABLY UNNEEDED. YOU CAN GET THE TEXT WITHOUT CLICKING ON "...more" ##
-    reviews = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.LINK_TEXT, "...more"))
-    )
-    reviews = driver.find_elements(By.LINK_TEXT, "...more")
-    print(len(reviews))
-    for review in reviews:
-        review.click()
+#     ## THIS IS PROBABLY UNNEEDED. YOU CAN GET THE TEXT WITHOUT CLICKING ON "...more" ##
+#     reviews = WebDriverWait(driver, 5).until(
+#         EC.presence_of_element_located((By.LINK_TEXT, "...more"))
+#     )
+#     reviews = driver.find_elements(By.LINK_TEXT, "...more")
+#     print(len(reviews))
+#     for review in reviews:
+#         review.click()
 
-    print('version 1 website.')
+#     print('version 1 website.')
 
-except:
-    print("THIS IS WRONG")
-    pass
+# except:
+#     print("THIS IS WRONG")
+#     pass
 
 
 # enter_site()
@@ -85,14 +85,62 @@ except:
 
 page = requests.get(driver.current_url)
 soup = BeautifulSoup(page.content, "html.parser")
-print(driver.current_url)
-print(soup.prettify())
+# print(driver.current_url)
+# print(soup.prettify())
 
 reviews = []
 # reviews_selector = soup.find_all('div')
 
+try:
+    lazyloaded = WebDriverWait(driver, 5).until(
+        EC.presence_of_element_located((By.CLASS_NAME, "lazyload-wrapper "))
+    )
+except:
+    print("not found")
+
+# need to scroll lazyload into view
+pause_time = 0.5
+i = 0
+last_height = driver.execute_script("return document.body.scrollHeight")
+while True:
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+    time.sleep(pause_time)
+    new_height = driver.execute_script("return document.body.scrollHeight")
+    if new_height == last_height:
+        break
+    last_height = new_height
+    i += 1
+    if i == 5:
+        break
+
+
+m = soup.find("div", attrs={"id":"ReviewsSection"})
 
 time.sleep(1000)
 
+# print(table.prettify())
+
+
+# print(table.prettify())
+
+# child = table.findChild("span", attrs={"class":"Formatted"})
+# print(child)
+
+
+# table2 = table.findChildren("div", attrs={"id":"reviewsSection"})
+# print(table2)
+
+# for row in table.findAll('span', attrs={"class": "Formatted"}):
+#     review_list = {}
+#     review_list['review'] = row.text
+#     reviews.append(review_list)
+
+# for row in table.findAll("div", attrs={''})
+
+time.sleep(1000)
+# table = soup.find('')
+
 ## to get a really good sentiment analysis, shouldn't i train on a certain amount of 5 star reviews, then 4 star, then 3...
 # for sentiment analysis, correct? let's do this later...
+
+# beta is slowly permanantly being rolled out on Goodreads, affects html
